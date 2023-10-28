@@ -18,7 +18,17 @@ class UpdateForm(forms.ModelForm):
         }
 
 class UserSignUpForm(forms.ModelForm):
+    #daca vrei sa ai un camp de email in formularul de inregistrare, required=True adica obligatoriu
+    email = forms.EmailField(required=True)
+    
     class Meta:
         model = User
         fields = "__all__"
+        
+    def save(self, commit=True):
+        user = super(UserSignUpForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user
 
