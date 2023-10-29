@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title%}Show Grades{% endblock %}
+{% block content %}
+    <table>
+        <tr>
+            <th>id_grade</th>
+            <th>Student name</th>
+            <th>Course name</th>
+            <th>Course grade</th>
+            <th>Date added</th>
+            <th>Added by</th>
+        </tr>
+        {% for grade in grades %}
+            <tr>
+                <td>{{grade.id}}</td>
+                <td>{{grade.student_name}}</td>
+                <td>{{grade.course_name}}</td>
+                <td>{{grade.course_grade}}</td>
+                <td>{{grade.date_added}}</td>
+                <td>{{grade.added_by}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
