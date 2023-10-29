@@ -57,17 +57,14 @@ class LogInView(View):
     form_class = UserLoginForm
 
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.is_teacher:
-            # ii arati pagina de prof
-            return render(request, 'home.html')
         if request.user.is_authenticated:
             if request.user.is_teacher:
                 return redirect('teacher_home')
             else:
                 return redirect('pupil_home')
         else:
-            # ii arati pagina de elev
-            return render(request, 'home.html')
+            form = UserLoginForm()
+            return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = UserLoginForm(request.POST)
