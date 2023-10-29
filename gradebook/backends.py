@@ -1,25 +1,18 @@
-from django.contrib.auth.backends import ModelBackend
-from django.contrib.auth import get_user_model
-from .models import User
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.backends import BaseBackend
+from django.contrib.auth.models import User
 
-class GradebookUserBackend(ModelBackend):
+class EmailBackend(BaseBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
-        UserModel = get_user_model()
         try:
-            user = UserModel.objects.get(username=username)
-        except UserModel.DoesNotExist:
+            user = User.objects.get(email=username)
+        except User.DoesNotExist:
             return None
 
         if user.check_password(password):
             return user
 
+    def get_user(self, user_id):
         try:
-            gradebook_user = User.objects.get(username=username)
+            return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
-
-        if gradebook_user.password == make_password(password):
-            return gradebook_user
-
-        return None

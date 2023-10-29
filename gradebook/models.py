@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 
 
+
 # Create your models here.
 
 
@@ -19,14 +20,14 @@ class Grade(models.Model):
     def __str__(self):
         return self.course_name
 
-class User(models.Model):
+class Utilizator(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    #aici am legat modelul meu de modelul User din django
     username = models.CharField(max_length=100)
-    password = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    email = models.EmailField()
     is_teacher = models.BooleanField()
+    USERNAME_FIELD = 'username'
     
-    def save(self, *args, **kwargs):
-        self.password = make_password(self.password)
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.password = make_password(self.password)
+    #     super().save(*args, **kwargs)

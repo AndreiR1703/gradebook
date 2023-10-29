@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from gradebook.models import Grade
+from gradebook.models import Grade, Utilizator
 from django.urls import reverse_lazy
 from .forms import *
 from django.contrib.auth.forms import UserCreationForm
@@ -48,38 +48,37 @@ class GradeDeleteView(DeleteView):
 
 
 class SignUpView(CreateView):
-    model = User
+    model = Utilizator
     template_name = "registration/signup.html"
     form_class = UserSignUpForm
     success_url = reverse_lazy("login")
 
 class LogInView(View):
-    model = User
+    model = Utilizator
     template_name = "registration/login.html"
     form_class = UserLoginForm
-
-
+    
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            if request.user.is_teacher:
-                return redirect('teacher_home')
-            else:
-                return redirect('pupil_home')
-        else:
-            form = UserLoginForm()
-            return render(request, self.template_name, {'form': form})
+        form = UserLoginForm()
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = UserLoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
+            try:
+                utilizator = Utilizator.objects.get(username=username)
+                user = utilizator.user
+            except Utilizator.DoesNotExist:
+                print("User does not exist")
+                user = None
+            if user is not None and user.check_password(password):
                 login(request, user)
-                print(user.get_username())
-                if user.is_teacher:
+                print(f"User {user} logged in, is_teacher={utilizator.is_teacher}")
+                if utilizator.is_teacher:
                     return redirect('teacher_home')
                 else:
                     return redirect('pupil_home')
+            print("Invalid username or password")
         return render(request, self.template_name, {'form': form})
