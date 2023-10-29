@@ -43,6 +43,8 @@ class UserSignUpForm(UserCreationForm):
         user.first_name = self.cleaned_data['first_name']
         user.is_teacher = self.cleaned_data['is_teacher']
         user.username = self.cleaned_data['username']
+        if User.objects.filter(username=user.username).exists():
+            raise forms.ValidationError("A user with that username already exists.")
         if commit:
             user.save()
             Utilizator.objects.create(user=user, 
@@ -51,7 +53,7 @@ class UserSignUpForm(UserCreationForm):
                                       username=user.username,)
         return user
 
-class UserLoginForm(forms.ModelForm):
+class UserLoginForm(forms.Form):
     username = forms.CharField(label='Username', max_length=30)
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
     class Meta:
