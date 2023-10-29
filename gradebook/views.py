@@ -72,9 +72,12 @@ class LogInView(View):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(request, username=username, password=password)
+            print("aici3")
             if user is not None:
+                print("aici1")
                 login(request, user)
                 print(user.get_username())
+                print("aici2")
                 if user.is_teacher:
                     return redirect('teacher_home')
                 else:
