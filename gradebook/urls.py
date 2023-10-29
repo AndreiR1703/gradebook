@@ -11,4 +11,6 @@ urlpatterns=[
     path("addgrade/", views.GradeCreateView.as_view(), name="add-grade"),
     path("updategrade/<int:pk>/", views.GradeUpdateView.as_view(), name="update-grade"),
     path("deletegrade/<int:pk>", views.GradeDeleteView.as_view(), name="delete-grade"),
+    path("teacher_home/", views.teacher_home, name="teacher-page"),
+    path("pupil_home/", views.pupil_home, name="pupil-page"),
 ]
