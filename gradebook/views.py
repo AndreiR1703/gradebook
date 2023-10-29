@@ -3,7 +3,7 @@ from gradebook.models import Grade
 from django.urls import reverse_lazy
 from .forms import *
 from django.contrib.auth.forms import UserCreationForm
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView, View
 # Create your views here.
 
 
@@ -40,3 +40,16 @@ class SignUpView(CreateView):
     template_name = "registration/signup.html"
     form_class = UserSignUpForm
     success_url = reverse_lazy("login")
+
+class LogInView(View):
+    model = User
+    template_name = "registration/login.html"
+    form_class = UserLoginForm
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.is_teacher:
+            # ii arati pagina de prof
+            return render(request, 'home.html')
+        else:
+            # ii arati pagina de elev
+            return render(request, 'home.html')
