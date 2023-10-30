@@ -48,37 +48,43 @@ class GradeDeleteView(DeleteView):
 
 
 class SignUpView(CreateView):
-    model = Utilizator
+    model = User
     template_name = "registration/signup.html"
     form_class = UserSignUpForm
     success_url = reverse_lazy("login")
+    
+from django.contrib.auth.backends import ModelBackend
 
 class LogInView(View):
-    model = Utilizator
+    model = User
     template_name = "registration/login.html"
     form_class = UserLoginForm
     
     def get(self, request, *args, **kwargs):
-        form = UserLoginForm()
+        form = self.form_class(None)
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
-        form = UserLoginForm(request.POST)
+        form = self.form_class(request.POST)
+        print("got form")
+
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
+            print(f"username={username}, password={password}")
             try:
-                utilizator = Utilizator.objects.get(username=username)
-                user = utilizator.user
-            except Utilizator.DoesNotExist:
-                print("User does not exist")
-                user = None
-            if user is not None and user.check_password(password):
-                login(request, user)
-                print(f"User {user} logged in, is_teacher={utilizator.is_teacher}")
-                if utilizator.is_teacher:
-                    return redirect('teacher_home')
+                user = self.model.objects.get(username=username)
+                user.backend = f"{ModelBackend.__module__}.{ModelBackend.__qualname__}"
+                if user.check_password(password):
+                    login(request, user)
+                    print(f"User {user} logged in")
+                    return redirect('show-grades')
                 else:
-                    return redirect('pupil_home')
-            print("Invalid username or password")
+                    form.add_error(None, "Invalid username or password")
+                    print("Invalid username or password")
+            except User.DoesNotExist:
+                form.add_error(None, "Invalid username or password")
+                print("Invalid username or password")
+        else:
+            print(f"Form is not valid {form.errors}")
         return render(request, self.template_name, {'form': form})
