@@ -6,18 +6,11 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      {% if user.is_authenticated %}
-          <li class="nav-item active">
-            <a class="nav-link" href="{% url 'show-grades' %}">Show grades</a>
-          </li>
-          {% for grade in grades %}
-              {% if user.username in grade.added_by %}
-                  <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'add-grade' %}">Add grade</a>
-                  </li>
-              {% endif %}
-          {% endfor %}
-      {% endif %}
+        {% if user.is_authenticated %}
+            <li class="nav-item active">
+                <a class="nav-link">Show grades</a>
+            </li>
+        {% endif %}
     </ul>
   </div>
 </nav>

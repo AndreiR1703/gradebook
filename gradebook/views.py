@@ -78,7 +78,18 @@ class LogInView(View):
                 if user.check_password(password):
                     login(request, user)
                     print(f"User {user} logged in")
-                    return redirect('show-grades')
+                    for u in Utilizator.objects.all():
+                        if u.username == username and u.is_teacher:
+                            return redirect('teacher-page')
+                        else:
+                            return redirect('pupil-page')
+
+                    # print(Utilizator.objects.get(username))
+                    # return redirect('show-grades')
+                    # if request.user.is_teacher:
+                    #     return redirect('teacher-page')
+                    # else:
+                    #     return redirect('pupil-page')
                 else:
                     form.add_error(None, "Invalid username or password")
                     print("Invalid username or password")

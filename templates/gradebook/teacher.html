@@ -10,6 +10,7 @@
             <th>Course grade</th>
             <th>Date added</th>
             <th>Added by</th>
+            <th><a href="{% url 'add-grade' %}">Add grade</a></th>
         </tr>
         {% for grade in grades %}
             <tr>
