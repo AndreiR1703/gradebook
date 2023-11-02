@@ -6,7 +6,15 @@ from django.contrib.auth.models import User
 from django.middleware import csrf
 
 class MyModelForm(forms.ModelForm):
-    course_name = forms.ModelChoiceField(queryset=Grade.objects.values_list('course_name', flat=True).distinct())
+    # course_name = forms.ModelChoiceField(queryset=Grade.objects.values_list('course_name', flat=True).distinct())
+    courses = (
+        ("Math", "Math"),
+        ("Informatics", "Informatics"),
+        ("Biology", "Biology"),
+        ("History", "History"),
+        ("Geography", "Geography"),
+    )
+    course_name = forms.ChoiceField(choices=courses)
     class Meta:
         model = Grade
         fields = "__all__"

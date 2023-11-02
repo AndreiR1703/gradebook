@@ -3,14 +3,19 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-        {% if user.is_authenticated %}
-            <li class="nav-item active">
-                <a class="nav-link">Show grades</a>
-            </li>
-        {% endif %}
-    </ul>
-  </div>
+    {% if user.is_authenticated %}
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            {% if user.is_teacher %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'teacher-page' %}">Show grades</a>
+                </li>
+            {% else %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'pupil-page' %}">Show grades</a>
+                </li>
+            {% endif %}
+        </ul>
+      </div>
+    {% endif %}
 </nav>

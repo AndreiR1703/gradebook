@@ -8,6 +8,8 @@ from django.contrib.auth import authenticate, login
 # Create your views here.
 
 
+global is_professor
+
 def show_first_page(request):
     return render(request, template_name='home.html')
 
@@ -33,18 +35,18 @@ class GradeCreateView(CreateView):
     model = Grade
     template_name = 'gradebook/form.html'
     form_class = MyModelForm
-    success_url = reverse_lazy('show-grades')
+    success_url = reverse_lazy('teacher-page')
 
 class GradeUpdateView(UpdateView):
     model = Grade
     template_name = 'gradebook/form.html'
     form_class = UpdateForm
-    success_url = reverse_lazy('show-grades')
+    success_url = reverse_lazy('teacher-page')
 
 class GradeDeleteView(DeleteView):
     model = Grade
     template_name = 'gradebook/deleteform.html'
-    success_url = reverse_lazy('show-grades')
+    success_url = reverse_lazy('teacher-page')
 
 
 class SignUpView(CreateView):
@@ -80,8 +82,10 @@ class LogInView(View):
                     print(f"User {user} logged in")
                     for u in Utilizator.objects.all():
                         if u.username == username and u.is_teacher:
+                            is_professor = 1
                             return redirect('teacher-page')
                         else:
+                            is_professor = 0
                             return redirect('pupil-page')
 
                     # print(Utilizator.objects.get(username))
