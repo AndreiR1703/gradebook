@@ -4,7 +4,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
     {% if user.is_authenticated %}
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+<!--      <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
         <ul class="navbar-nav mr-auto">
             {% if user.is_teacher %}
                 <li class="nav-item active">
@@ -16,6 +16,6 @@
                 </li>
             {% endif %}
         </ul>
-      </div>
+<!--      </div>-->
     {% endif %}
 </nav>

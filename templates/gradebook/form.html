@@ -4,10 +4,12 @@
         <title>Grade Book</title>
     </head>
     <body>
-        <form method="POST" action=".">
-            {% csrf_token %}
-            {{form.as_p}}
-            <input type="submit" value="save"/>
-        </form>
+        <div class="form">
+            <form method="POST" action=".">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input type="submit" value="save"/>
+            </form>
+        </div>
     </body>
 </html>
