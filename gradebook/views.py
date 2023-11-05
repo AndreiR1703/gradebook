@@ -36,6 +36,11 @@ class GradeCreateView(CreateView):
     template_name = 'gradebook/form.html'
     form_class = MyModelForm
     success_url = reverse_lazy('teacher-page')
+    def get_form_kwargs(self):
+        kwargs = super(GradeCreateView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
 
 class GradeUpdateView(UpdateView):
     model = Grade
