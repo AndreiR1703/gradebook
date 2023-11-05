@@ -1,21 +1,26 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/gradebook/">GradeBook</a>
+  <a class="navbar-brand" href="{% url 'home' %}">GradeBook</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
     {% if user.is_authenticated %}
 <!--      <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
-        <ul class="navbar-nav mr-auto">
-            {% if user.is_teacher %}
+        {% if user.username == "admin" or user.utilizator.is_teacher %}
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'teacher-page' %}">Show grades</a>
                 </li>
-            {% else %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'add-grade' %}">Add new grade</a>
+                </li>
+            </ul>
+        {% else %}
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'pupil-page' %}">Show grades</a>
                 </li>
-            {% endif %}
-        </ul>
+            </ul>
+        {% endif %}
 <!--      </div>-->
     {% endif %}
 </nav>

@@ -11,17 +11,17 @@ from django.contrib.auth.hashers import make_password
 
 class Grade(models.Model):
     student_name = models.CharField(max_length=100, blank=True)
-    course_name = models.CharField(max_length=100)
+    course_name = models.CharField(max_length=100,blank=True)
     course_grade = models.PositiveIntegerField(validators=[MaxValueValidator(10, message="Grade must be less than or equal to 10.")])
     date_added = models.DateTimeField(default=datetime.now, blank=True)
     # added_by = models.CharField(default=User.objects.get(), max_length=100)
-    added_by = models.CharField(default="prof1", max_length=100)
+    added_by = models.CharField(max_length=100,blank=True)
 
     def __str__(self):
         return self.course_name
 
 class Utilizator(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User,related_name='utilizator', on_delete=models.CASCADE)
     #aici am legat modelul meu de modelul User din django
     username = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)

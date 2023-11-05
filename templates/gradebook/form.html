@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Grade Book</title>
-    </head>
-    <body>
-        <div class="form">
-            <form method="POST" action=".">
-                {% csrf_token %}
-                {{form.as_p}}
-                <input type="submit" value="save"/>
-            </form>
-        </div>
-    </body>
-</html>
+{% extends "base.html" %}
+{% block title %}New grade{% endblock %}
+{% block content %}
+    <div class="form">
+        <h2>Add new grade</h2>
+        <form method="POST" action=".">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="save"/>
+        </form>
+    </div>
+{% endblock %}

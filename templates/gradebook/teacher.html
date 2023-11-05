@@ -14,16 +14,29 @@
             <th colspan="2"><a href="{% url 'add-grade' %}">Add grade</a></th>
         </tr>
         {% for grade in grades %}
-            <tr>
-                <td>{{grade.id}}</td>
-                <td>{{grade.student_name}}</td>
-                <td>{{grade.course_name}}</td>
-                <td>{{grade.course_grade}}</td>
-                <td>{{grade.date_added}}</td>
-                <td>{{grade.added_by}}</td>
-                <td class="edit"><a href="http://127.0.0.1:8000/gradebook/updategrade/{{grade.id}}">edit</a></td>
-                <td class="delete"><a href="http://127.0.0.1:8000/gradebook/deletegrade/{{grade.id}}">delete</a></td>
-            </tr>
+            {% if user.username == 'admin' %}
+                <tr>
+                    <td>{{grade.id}}</td>
+                    <td>{{grade.student_name}}</td>
+                    <td>{{grade.course_name}}</td>
+                    <td>{{grade.course_grade}}</td>
+                    <td>{{grade.date_added}}</td>
+                    <td>{{grade.added_by}}</td>
+                    <td class="edit"><a href="http://127.0.0.1:8000/gradebook/updategrade/{{grade.id}}">edit</a></td>
+                    <td class="delete"><a href="http://127.0.0.1:8000/gradebook/deletegrade/{{grade.id}}">delete</a></td>
+                </tr>
+            {% elif user.username == grade.added_by %}
+                <tr>
+                    <td>{{grade.id}}</td>
+                    <td>{{grade.student_name}}</td>
+                    <td>{{grade.course_name}}</td>
+                    <td>{{grade.course_grade}}</td>
+                    <td>{{grade.date_added}}</td>
+                    <td>{{grade.added_by}}</td>
+                    <td class="edit"><a href="http://127.0.0.1:8000/gradebook/updategrade/{{grade.id}}">edit</a></td>
+                    <td class="delete"><a href="http://127.0.0.1:8000/gradebook/deletegrade/{{grade.id}}">delete</a></td>
+                </tr>
+            {% endif %}
         {% endfor %}
     </table>
 </div>

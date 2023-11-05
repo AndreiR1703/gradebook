@@ -78,22 +78,15 @@ class LogInView(View):
                 user = self.model.objects.get(username=username)
                 user.backend = f"{ModelBackend.__module__}.{ModelBackend.__qualname__}"
                 if user.check_password(password):
+
                     login(request, user)
                     print(f"User {user} logged in")
-                    for u in Utilizator.objects.all():
-                        if u.username == username and u.is_teacher:
-                            is_professor = 1
-                            return redirect('teacher-page')
-                        else:
-                            is_professor = 0
-                            return redirect('pupil-page')
-
-                    # print(Utilizator.objects.get(username))
-                    # return redirect('show-grades')
-                    # if request.user.is_teacher:
-                    #     return redirect('teacher-page')
-                    # else:
-                    #     return redirect('pupil-page')
+                    if user.username == 'admin':
+                        return redirect('teacher-page')
+                    elif user.utilizator.is_teacher:
+                        return redirect('teacher-page')
+                    else:
+                        return redirect('pupil-page')
                 else:
                     form.add_error(None, "Invalid username or password")
                     print("Invalid username or password")

@@ -15,6 +15,17 @@ class MyModelForm(forms.ModelForm):
         ("Geography", "Geography"),
     )
     course_name = forms.ChoiceField(choices=courses)
+
+    # student_name = forms.ModelChoiceField(queryset=User.objects.values_list('username', flat=True).distinct())
+    student_query = Utilizator.objects.filter(is_teacher=False).values_list('username', flat=True).distinct()
+    student_name = forms.ChoiceField(choices=[('', 'None')] + [(username, username) for username in student_query])
+    # student_name = forms.ModelChoiceField(queryset=Utilizator.objects.filter(is_teacher=False).values_list('username', flat=True).distinct())
+
+
+    teacher_query = Utilizator.objects.filter(is_teacher=True).values_list('username', flat=True).distinct()
+    added_by = forms.ChoiceField(choices=[('', 'None')] + [(username, username) for username in teacher_query])
+    # added_by = forms.ModelChoiceField(queryset=Utilizator.objects.filter(is_teacher=True).values_list('username', flat=True).distinct())
+
     class Meta:
         model = Grade
         fields = "__all__"
