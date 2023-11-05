@@ -23,9 +23,17 @@ class MyModelForm(forms.ModelForm):
 
 
     teacher_query = Utilizator.objects.filter(is_teacher=True).values_list('username', flat=True).distinct()
-    added_by = forms.ChoiceField(choices=[('', 'None')] + [(username, username) for username in teacher_query])
+    #added_by = forms.ChoiceField(choices=[('', 'None')] + [(username, username) for username in teacher_query])
     # added_by = forms.ModelChoiceField(queryset=Utilizator.objects.filter(is_teacher=True).values_list('username', flat=True).distinct())
+    added_by = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
 
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop('request', None)
+        print(request)
+        super(MyModelForm, self).__init__(*args, **kwargs)
+        if request is not None:
+            self.fields['added_by'].initial = request.user.username
+    
     class Meta:
         model = Grade
         fields = "__all__"
