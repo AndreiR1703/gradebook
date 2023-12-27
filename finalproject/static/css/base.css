@@ -1,3 +1,15 @@
+div.home {
+  max-width: 350px;
+  margin: auto;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+img.usericon {
+  width: 150px;
+  height: 150px;
+}
+
 div.form {
   max-width: 350px;
   margin: auto;
