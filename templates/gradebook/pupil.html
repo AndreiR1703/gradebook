@@ -5,22 +5,20 @@
 <div class="tabel">
     <table>
         <tr>
-            <th>id_grade</th>
-            <th>Student name</th>
             <th>Course name</th>
             <th>Course grade</th>
             <th>Date added</th>
             <th>Added by</th>
         </tr>
         {% for grade in grades %}
-            <tr>
-                <td>{{grade.id}}</td>
-                <td>{{grade.student_name}}</td>
-                <td>{{grade.course_name}}</td>
-                <td>{{grade.course_grade}}</td>
-                <td>{{grade.date_added}}</td>
-                <td>{{grade.added_by}}</td>
-            </tr>
+            {% if user.username == grade.student_name %}
+                <tr>
+                    <td>{{grade.course_name}}</td>
+                    <td>{{grade.course_grade}}</td>
+                    <td>{{grade.date_added}}</td>
+                    <td>{{grade.added_by}}</td>
+                </tr>
+            {% endif %}
         {% endfor %}
     </table>
 </div>
